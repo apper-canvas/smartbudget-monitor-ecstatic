@@ -21,12 +21,13 @@ export default {
           600: '#7c3aed',
           700: '#6d28d9',
         },
-        success: {
+success: {
           50: '#ecfdf5',
           100: '#d1fae5',
           500: '#10b981',
           600: '#10b981',
           700: '#047857',
+          800: '#065f46',
         },
         warning: {
           50: '#fffbeb',
@@ -34,6 +35,7 @@ export default {
           500: '#f59e0b',
           600: '#f59e0b',
           700: '#d97706',
+          800: '#b45309',
         },
         error: {
           50: '#fef2f2',
@@ -41,6 +43,7 @@ export default {
           500: '#ef4444',
           600: '#ef4444',
           700: '#dc2626',
+          800: '#b91c1c',
         },
         surface: '#f8fafc',
         background: '#ffffff',
