@@ -12,7 +12,12 @@ export const formatDate = (date) => {
   if (!date) return "";
   if (typeof date === "string") {
     if (date.trim() === "") return "";
-    return format(parseISO(date), "MMM dd, yyyy");
+    try {
+      return format(parseISO(date), "MMM dd, yyyy");
+    } catch (error) {
+      console.error("Invalid date string in formatDate:", date);
+      return "";
+    }
   }
   return format(date, "MMM dd, yyyy");
 };
@@ -21,7 +26,12 @@ export const formatShortDate = (date) => {
   if (!date) return "";
   if (typeof date === "string") {
     if (date.trim() === "") return "";
-    return format(parseISO(date), "MM/dd/yyyy");
+    try {
+      return format(parseISO(date), "MM/dd/yyyy");
+    } catch (error) {
+      console.error("Invalid date string in formatShortDate:", date);
+      return "";
+    }
   }
   return format(date, "MM/dd/yyyy");
 };
@@ -30,7 +40,12 @@ export const formatMonthYear = (date) => {
   if (!date) return "";
   if (typeof date === "string") {
     if (date.trim() === "") return "";
-    return format(parseISO(date), "MMMM yyyy");
+    try {
+      return format(parseISO(date), "MMMM yyyy");
+    } catch (error) {
+      console.error("Invalid date string in formatMonthYear:", date);
+      return "";
+    }
   }
   return format(date, "MMMM yyyy");
 };
@@ -48,7 +63,12 @@ export const isDateInCurrentMonth = (date) => {
   let checkDate;
   if (typeof date === "string") {
     if (date.trim() === "") return false;
-    checkDate = parseISO(date);
+    try {
+      checkDate = parseISO(date);
+    } catch (error) {
+      console.error("Invalid date string in isDateInCurrentMonth:", date);
+      return false;
+    }
   } else {
     checkDate = date;
   }
@@ -66,7 +86,12 @@ export const getMonthFromDate = (date) => {
     if (date.trim() === "") {
       return format(new Date(), "yyyy-MM");
     }
-    checkDate = parseISO(date);
+    try {
+      checkDate = parseISO(date);
+    } catch (error) {
+      console.error("Invalid date string in getMonthFromDate:", date);
+      return format(new Date(), "yyyy-MM");
+    }
   } else {
     checkDate = date;
   }
