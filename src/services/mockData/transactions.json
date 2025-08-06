@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "type": "income",
+    "amount": 5000,
+    "category": "Salary",
+    "description": "Monthly salary",
+    "date": "2024-01-01",
+    "createdAt": "2024-01-01T10:00:00Z"
+  },
+  {
+    "Id": 2,
+    "type": "expense",
+    "amount": -850,
+    "category": "Food & Dining",
+    "description": "Grocery shopping",
+    "date": "2024-01-02",
+    "createdAt": "2024-01-02T14:30:00Z"
+  },
+  {
+    "Id": 3,
+    "type": "expense",
+    "amount": -45,
+    "category": "Transportation",
+    "description": "Gas station",
+    "date": "2024-01-03",
+    "createdAt": "2024-01-03T16:15:00Z"
+  },
+  {
+    "Id": 4,
+    "type": "expense",
+    "amount": -120,
+    "category": "Entertainment",
+    "description": "Movie tickets and dinner",
+    "date": "2024-01-05",
+    "createdAt": "2024-01-05T19:45:00Z"
+  },
+  {
+    "Id": 5,
+    "type": "expense",
+    "amount": -25,
+    "category": "Food & Dining",
+    "description": "Coffee shop",
+    "date": "2024-01-06",
+    "createdAt": "2024-01-06T08:30:00Z"
+  },
+  {
+    "Id": 6,
+    "type": "income",
+    "amount": 500,
+    "category": "Freelance",
+    "description": "Web design project",
+    "date": "2024-01-08",
+    "createdAt": "2024-01-08T11:00:00Z"
+  },
+  {
+    "Id": 7,
+    "type": "expense",
+    "amount": -1200,
+    "category": "Bills & Utilities",
+    "description": "Monthly rent",
+    "date": "2024-01-10",
+    "createdAt": "2024-01-10T09:00:00Z"
+  },
+  {
+    "Id": 8,
+    "type": "expense",
+    "amount": -80,
+    "category": "Healthcare",
+    "description": "Pharmacy prescription",
+    "date": "2024-01-12",
+    "createdAt": "2024-01-12T15:20:00Z"
+  },
+  {
+    "Id": 9,
+    "type": "expense",
+    "amount": -200,
+    "category": "Shopping",
+    "description": "New winter jacket",
+    "date": "2024-01-15",
+    "createdAt": "2024-01-15T13:45:00Z"
+  },
+  {
+    "Id": 10,
+    "type": "expense",
+    "amount": -35,
+    "category": "Transportation",
+    "description": "Bus pass monthly",
+    "date": "2024-01-18",
+    "createdAt": "2024-01-18T07:30:00Z"
+  }
+]

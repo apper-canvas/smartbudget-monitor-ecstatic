@@ -1,0 +1,91 @@
+@import 'react-toastify/dist/ReactToastify.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0; 
+      transform: scale(0.95); 
+    }
+    to { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+}
+
+/* Toast customization */
+.Toastify__toast {
+  @apply rounded-lg shadow-card font-medium;
+  min-height: auto;
+  padding: 12px 16px;
+}
+
+.Toastify__toast--success {
+  @apply bg-success-50 text-success-800 border border-success-200;
+}
+
+.Toastify__toast--error {
+  @apply bg-error-50 text-error-800 border border-error-200;
+}
+
+.Toastify__toast--warning {
+  @apply bg-warning-50 text-warning-800 border border-warning-200;
+}
+
+.Toastify__toast-container {
+  width: auto;
+  max-width: 400px;
+}
+
+.Toastify__progress-bar {
+  height: 3px;
+}
+
+.Toastify__progress-bar--success {
+  @apply bg-success-500;
+}
+
+.Toastify__progress-bar--error {
+  @apply bg-error-500;
+}
+
+.Toastify__progress-bar--warning {
+  @apply bg-warning-500;
+}
+
+/* ApexCharts customization */
+.apexcharts-tooltip {
+  @apply shadow-card rounded-lg;
+}
+
+.apexcharts-legend-text {
+  @apply text-gray-600;
+}
