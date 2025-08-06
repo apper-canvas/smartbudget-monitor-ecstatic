@@ -5,9 +5,12 @@ import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 
 const BudgetCard = ({ budget, onEdit, onDelete }) => {
-  const percentage = budget.monthlyLimit > 0 ? (budget.spent / budget.monthlyLimit) * 100 : 0;
-  const remaining = budget.monthlyLimit - budget.spent;
-  const isOverBudget = budget.spent > budget.monthlyLimit;
+const monthlyLimit = budget.monthlyLimit_c || budget.monthlyLimit;
+  const spent = budget.spent_c || budget.spent;
+  const category = budget.category_c || budget.category;
+  const percentage = monthlyLimit > 0 ? (spent / monthlyLimit) * 100 : 0;
+  const remaining = monthlyLimit - spent;
+  const isOverBudget = spent > monthlyLimit;
 
   const getCategoryIcon = (category) => {
     const iconMap = {
@@ -46,11 +49,11 @@ const BudgetCard = ({ budget, onEdit, onDelete }) => {
       <Card hover className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getCategoryColor(budget.category)}`}>
-              <ApperIcon name={getCategoryIcon(budget.category)} className="w-6 h-6" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getCategoryColor(category)}`}>
+              <ApperIcon name={getCategoryIcon(category)} className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{budget.category}</h3>
+              <h3 className="font-semibold text-gray-900">{category}</h3>
               <p className="text-sm text-gray-500">Monthly Budget</p>
             </div>
           </div>
@@ -76,15 +79,15 @@ const BudgetCard = ({ budget, onEdit, onDelete }) => {
 
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Spent</span>
+<span className="text-gray-600">Spent</span>
             <span className={`font-semibold ${isOverBudget ? "text-error-600" : "text-gray-900"}`}>
-              {formatCurrency(budget.spent)}
+              {formatCurrency(spent)}
             </span>
           </div>
           
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Budget</span>
-            <span className="font-semibold text-gray-900">{formatCurrency(budget.monthlyLimit)}</span>
+            <span className="font-semibold text-gray-900">{formatCurrency(monthlyLimit)}</span>
           </div>
 
           {/* Progress Bar */}
@@ -103,7 +106,7 @@ const BudgetCard = ({ budget, onEdit, onDelete }) => {
             <span className={`text-sm font-medium ${
               isOverBudget ? "text-error-600" : percentage > 80 ? "text-warning-600" : "text-success-600"
             }`}>
-              {formatPercentage(budget.spent, budget.monthlyLimit)} used
+{formatPercentage(spent, monthlyLimit)} used
             </span>
             <span className={`text-sm font-semibold ${
               remaining >= 0 ? "text-success-600" : "text-error-600"

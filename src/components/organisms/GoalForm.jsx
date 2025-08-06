@@ -15,12 +15,12 @@ const GoalForm = ({ goal, onSubmit, onCancel }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (goal) {
+if (goal) {
       setFormData({
-        name: goal.name,
-        targetAmount: goal.targetAmount.toString(),
-        currentAmount: goal.currentAmount.toString(),
-        deadline: goal.deadline,
+        name: goal.Name || goal.name,
+        targetAmount: (goal.targetAmount_c || goal.targetAmount).toString(),
+        currentAmount: (goal.currentAmount_c || goal.currentAmount).toString(),
+        deadline: goal.deadline_c || goal.deadline,
       });
     }
   }, [goal]);

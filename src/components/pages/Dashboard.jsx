@@ -47,16 +47,16 @@ const Dashboard = () => {
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
   // Calculate current month metrics
-  const currentMonth = getCurrentMonth();
-  const currentMonthTransactions = transactions.filter(t => getMonthFromDate(t.date) === currentMonth);
+const currentMonth = getCurrentMonth();
+  const currentMonthTransactions = transactions.filter(t => getMonthFromDate(t.date_c || t.date) === currentMonth);
   
   const totalIncome = currentMonthTransactions
-    .filter(t => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter(t => (t.type_c || t.type) === "income")
+    .reduce((sum, t) => sum + (t.amount_c || t.amount), 0);
   
   const totalExpenses = Math.abs(currentMonthTransactions
-    .filter(t => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0));
+    .filter(t => (t.type_c || t.type) === "expense")
+    .reduce((sum, t) => sum + (t.amount_c || t.amount), 0));
   
   const netIncome = totalIncome - totalExpenses;
   const savingsRate = calculateSavingsRate(totalIncome, totalExpenses);
@@ -64,10 +64,10 @@ const Dashboard = () => {
   // Get recent transactions (last 5)
   const recentTransactions = transactions.slice(0, 5);
   
-  // Calculate total budget usage
-  const currentMonthBudgets = budgets.filter(b => b.month === currentMonth);
-  const totalBudget = currentMonthBudgets.reduce((sum, b) => sum + b.monthlyLimit, 0);
-  const totalBudgetSpent = currentMonthBudgets.reduce((sum, b) => sum + b.spent, 0);
+// Calculate total budget usage
+  const currentMonthBudgets = budgets.filter(b => (b.month_c || b.month) === currentMonth);
+  const totalBudget = currentMonthBudgets.reduce((sum, b) => sum + (b.monthlyLimit_c || b.monthlyLimit), 0);
+  const totalBudgetSpent = currentMonthBudgets.reduce((sum, b) => sum + (b.spent_c || b.spent), 0);
 
   return (
     <div className="space-y-8">
@@ -217,27 +217,27 @@ const Dashboard = () => {
                 <span className="text-gray-600">Active Goals</span>
                 <span className="font-semibold">{goals.length}</span>
               </div>
-              <div className="flex justify-between text-sm">
+<div className="flex justify-between text-sm">
                 <span className="text-gray-600">Total Target</span>
-                <span className="font-semibold">${goals.reduce((sum, g) => sum + g.targetAmount, 0).toFixed(2)}</span>
+                <span className="font-semibold">${goals.reduce((sum, g) => sum + (g.targetAmount_c || g.targetAmount), 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Total Saved</span>
-                <span className="font-semibold">${goals.reduce((sum, g) => sum + g.currentAmount, 0).toFixed(2)}</span>
+                <span className="font-semibold">${goals.reduce((sum, g) => sum + (g.currentAmount_c || g.currentAmount), 0).toFixed(2)}</span>
               </div>
               {goals.slice(0, 2).map((goal, index) => (
                 <div key={goal.Id} className="p-3 bg-gray-50 rounded-lg">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-900">{goal.name}</span>
+<div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-900">{goal.Name || goal.name}</span>
                     <span className="text-sm text-gray-600">
-                      {((goal.currentAmount / goal.targetAmount) * 100).toFixed(1)}%
+                      {(((goal.currentAmount_c || goal.currentAmount) / (goal.targetAmount_c || goal.targetAmount)) * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <motion.div
                       className="h-2 rounded-full bg-primary-500"
                       initial={{ width: 0 }}
-                      animate={{ width: `${Math.min((goal.currentAmount / goal.targetAmount) * 100, 100)}%` }}
+                      animate={{ width: `${Math.min(((goal.currentAmount_c || goal.currentAmount) / (goal.targetAmount_c || goal.targetAmount)) * 100, 100)}%` }}
                       transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
                     />
                   </div>

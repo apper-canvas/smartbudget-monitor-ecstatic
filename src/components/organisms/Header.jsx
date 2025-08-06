@@ -36,7 +36,7 @@ const Header = ({ onMenuClick }) => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-4">
+<div className="flex items-center space-x-4">
           <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
             <ApperIcon name="Calendar" className="w-4 h-4" />
             <span>{new Date().toLocaleDateString("en-US", { 
@@ -46,6 +46,21 @@ const Header = ({ onMenuClick }) => {
               day: "numeric" 
             })}</span>
           </div>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              const { AuthContext } = require('../../App');
+              const { useContext } = require('react');
+              const { logout } = useContext(AuthContext);
+              logout();
+            }}
+            className="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-900"
+          >
+            <ApperIcon name="LogOut" className="w-4 h-4" />
+            <span className="hidden sm:inline">Logout</span>
+          </Button>
         </div>
       </div>
     </header>

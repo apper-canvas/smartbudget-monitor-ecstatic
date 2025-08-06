@@ -107,9 +107,9 @@ const Goals = () => {
   if (error) return <Error message={error} onRetry={loadGoals} />;
 
   // Calculate totals
-  const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0);
-  const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0);
-  const completedGoals = goals.filter(goal => goal.currentAmount >= goal.targetAmount).length;
+const totalTarget = goals.reduce((sum, goal) => sum + (goal.targetAmount_c || goal.targetAmount), 0);
+  const totalSaved = goals.reduce((sum, goal) => sum + (goal.currentAmount_c || goal.currentAmount), 0);
+  const completedGoals = goals.filter(goal => (goal.currentAmount_c || goal.currentAmount) >= (goal.targetAmount_c || goal.targetAmount)).length;
 
   return (
     <div className="space-y-6">

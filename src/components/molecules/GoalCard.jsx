@@ -5,9 +5,11 @@ import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 
 const GoalCard = ({ goal, onEdit, onDelete, onAddMoney }) => {
-  const percentage = goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0;
-  const remaining = goal.targetAmount - goal.currentAmount;
-  const isCompleted = goal.currentAmount >= goal.targetAmount;
+const targetAmount = goal.targetAmount_c || goal.targetAmount;
+  const currentAmount = goal.currentAmount_c || goal.currentAmount;
+  const percentage = targetAmount > 0 ? (currentAmount / targetAmount) * 100 : 0;
+  const remaining = targetAmount - currentAmount;
+  const isCompleted = currentAmount >= targetAmount;
 
   return (
     <motion.div
@@ -24,8 +26,8 @@ const GoalCard = ({ goal, onEdit, onDelete, onAddMoney }) => {
               <ApperIcon name={isCompleted ? "CheckCircle" : "Target"} className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{goal.name}</h3>
-              <p className="text-sm text-gray-500">Due {formatDate(goal.deadline)}</p>
+              <h3 className="font-semibold text-gray-900">{goal.Name || goal.name}</h3>
+              <p className="text-sm text-gray-500">Due {formatDate(goal.deadline_c || goal.deadline)}</p>
             </div>
           </div>
           <div className="flex space-x-1">
@@ -59,13 +61,13 @@ const GoalCard = ({ goal, onEdit, onDelete, onAddMoney }) => {
 
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Current</span>
-            <span className="font-semibold text-gray-900">{formatCurrency(goal.currentAmount)}</span>
+<span className="text-gray-600">Current</span>
+            <span className="font-semibold text-gray-900">{formatCurrency(currentAmount)}</span>
           </div>
           
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Target</span>
-            <span className="font-semibold text-gray-900">{formatCurrency(goal.targetAmount)}</span>
+            <span className="font-semibold text-gray-900">{formatCurrency(targetAmount)}</span>
           </div>
 
           {/* Progress Bar */}

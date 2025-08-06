@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import Modal from "@/components/atoms/Modal";
+import { transactionService } from "@/services/api/transactionService";
+import { budgetService } from "@/services/api/budgetService";
+import ApperIcon from "@/components/ApperIcon";
 import BudgetCard from "@/components/molecules/BudgetCard";
 import BudgetForm from "@/components/organisms/BudgetForm";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
-import { budgetService } from "@/services/api/budgetService";
-import { transactionService } from "@/services/api/transactionService";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
+import Modal from "@/components/atoms/Modal";
 import { getCurrentMonth, getMonthFromDate } from "@/utils/formatters";
 
 const Budgets = () => {
@@ -51,22 +52,26 @@ const Budgets = () => {
   const updateBudgetSpentAmounts = async () => {
     if (budgets.length === 0 || transactions.length === 0) return;
 
-    const monthBudgets = budgets.filter(b => b.month === selectedMonth);
+const monthBudgets = budgets.filter(b => (b.month_c || b.month) === selectedMonth);
     
     for (const budget of monthBudgets) {
       const categoryExpenses = transactions.filter(t =>
-        t.type === "expense" &&
-        t.category === budget.category &&
-        getMonthFromDate(t.date) === selectedMonth
+        (t.type_c || t.type) === "expense" &&
+        (t.category_c || t.category) === (budget.category_c || budget.category) &&
+        getMonthFromDate(t.date_c || t.date) === selectedMonth
       );
       
-      const totalSpent = categoryExpenses.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+      const totalSpent = categoryExpenses.reduce((sum, t) => sum + Math.abs(t.amount_c || t.amount), 0);
       
-      if (totalSpent !== budget.spent) {
+      if (totalSpent !== (budget.spent_c || budget.spent)) {
         try {
-          await budgetService.updateSpentAmount(budget.category, selectedMonth, totalSpent);
+          await budgetService.updateSpentAmount(
+            budget.category_c || budget.category, 
+            selectedMonth, 
+            totalSpent
+          );
           setBudgets(prev => prev.map(b =>
-            b.Id === budget.Id ? { ...b, spent: totalSpent } : b
+            b.Id === budget.Id ? { ...b, spent_c: totalSpent, spent: totalSpent } : b
           ));
         } catch (error) {
           console.error("Error updating budget spent amount:", error);
@@ -120,7 +125,7 @@ const Budgets = () => {
     setEditingBudget(null);
   };
 
-  const filteredBudgets = budgets.filter(budget => budget.month === selectedMonth);
+const filteredBudgets = budgets.filter(budget => (budget.month_c || budget.month) === selectedMonth);
 
   if (loading) return <Loading type="cards" />;
   if (error) return <Error message={error} onRetry={loadData} />;
@@ -170,26 +175,26 @@ const Budgets = () => {
           transition={{ duration: 0.3 }}
         >
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Summary</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-primary-600">
-                ${filteredBudgets.reduce((sum, b) => sum + b.monthlyLimit, 0).toFixed(2)}
+                ${filteredBudgets.reduce((sum, b) => sum + (b.monthlyLimit_c || b.monthlyLimit), 0).toFixed(2)}
               </div>
               <div className="text-sm text-gray-600">Total Budget</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-error-600">
-                ${filteredBudgets.reduce((sum, b) => sum + b.spent, 0).toFixed(2)}
+                ${filteredBudgets.reduce((sum, b) => sum + (b.spent_c || b.spent), 0).toFixed(2)}
               </div>
               <div className="text-sm text-gray-600">Total Spent</div>
             </div>
             <div className="text-center">
               <div className={`text-2xl font-bold ${
-                filteredBudgets.reduce((sum, b) => sum + (b.monthlyLimit - b.spent), 0) >= 0
+                filteredBudgets.reduce((sum, b) => sum + ((b.monthlyLimit_c || b.monthlyLimit) - (b.spent_c || b.spent)), 0) >= 0
                   ? "text-success-600"
                   : "text-error-600"
               }`}>
-                ${filteredBudgets.reduce((sum, b) => sum + (b.monthlyLimit - b.spent), 0).toFixed(2)}
+                ${filteredBudgets.reduce((sum, b) => sum + ((b.monthlyLimit_c || b.monthlyLimit) - (b.spent_c || b.spent)), 0).toFixed(2)}
               </div>
               <div className="text-sm text-gray-600">Remaining</div>
             </div>

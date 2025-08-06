@@ -20,13 +20,13 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }) => {
 
   useEffect(() => {
     loadCategories();
-    if (transaction) {
+if (transaction) {
       setFormData({
-        type: transaction.type,
-        amount: Math.abs(transaction.amount).toString(),
-        category: transaction.category,
-        description: transaction.description,
-        date: transaction.date,
+        type: transaction.type_c || transaction.type,
+        amount: Math.abs(transaction.amount_c || transaction.amount).toString(),
+        category: transaction.category_c || transaction.category,
+        description: transaction.description_c || transaction.Name,
+        date: transaction.date_c || transaction.date,
       });
     }
   }, [transaction]);
@@ -40,7 +40,7 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }) => {
     }
   };
 
-  const filteredCategories = categories.filter(cat => cat.type === formData.type);
+const filteredCategories = categories.filter(cat => (cat.type_c || cat.type) === formData.type);
 
   const validateForm = () => {
     const newErrors = {};
@@ -136,9 +136,9 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }) => {
           error={errors.category}
         >
           <option value="">Select a category</option>
-          {filteredCategories.map((category) => (
-            <option key={category.Id} value={category.name}>
-              {category.name}
+{filteredCategories.map((category) => (
+            <option key={category.Id} value={category.Name || category.name}>
+              {category.Name || category.name}
             </option>
           ))}
         </Select>

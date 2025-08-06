@@ -47,34 +47,42 @@ const Transactions = () => {
   const updateBudgetSpent = async (transaction, isDelete = false) => {
     if (transaction.type !== "expense") return;
     
-    const month = getMonthFromDate(transaction.date);
-    const budget = budgets.find(b => b.category === transaction.category && b.month === month);
+const month = getMonthFromDate(transaction.date_c || transaction.date);
+    const budget = budgets.find(b => 
+      (b.category_c || b.category) === (transaction.category_c || transaction.category) && 
+      (b.month_c || b.month) === month
+    );
     
     if (budget) {
       const categoryTransactions = transactions.filter(t => 
-        t.type === "expense" && 
-        t.category === transaction.category && 
-        getMonthFromDate(t.date) === month
+        (t.type_c || t.type) === "expense" && 
+        (t.category_c || t.category) === (transaction.category_c || transaction.category) && 
+        getMonthFromDate(t.date_c || t.date) === month
       );
       
-      let newSpent = categoryTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+let newSpent = categoryTransactions.reduce((sum, t) => sum + Math.abs(t.amount_c || t.amount), 0);
       
       if (isDelete) {
-        newSpent -= Math.abs(transaction.amount);
+        newSpent -= Math.abs(transaction.amount_c || transaction.amount);
       } else {
         // For new transactions, add the amount
         const existingTransaction = categoryTransactions.find(t => t.Id === transaction.Id);
         if (!existingTransaction) {
-          newSpent += Math.abs(transaction.amount);
+          newSpent += Math.abs(transaction.amount_c || transaction.amount);
         }
       }
       
-      await budgetService.updateSpentAmount(transaction.category, month, newSpent);
+      await budgetService.updateSpentAmount(
+        transaction.category_c || transaction.category, 
+        month, 
+        newSpent
+      );
       
       // Update local budgets state
       setBudgets(prev => prev.map(b => 
-        b.category === transaction.category && b.month === month 
-          ? { ...b, spent: newSpent }
+        (b.category_c || b.category) === (transaction.category_c || transaction.category) && 
+        (b.month_c || b.month) === month 
+          ? { ...b, spent_c: newSpent, spent: newSpent }
           : b
       ));
     }
@@ -131,9 +139,9 @@ const Transactions = () => {
     setEditingTransaction(null);
   };
 
-  const filteredTransactions = transactions.filter(transaction => {
+const filteredTransactions = transactions.filter(transaction => {
     if (filterType === "all") return true;
-    return transaction.type === filterType;
+    return (transaction.type_c || transaction.type) === filterType;
   });
 
   if (loading) return <Loading type="table" />;

@@ -50,18 +50,18 @@ const TransactionCard = ({ transaction, onEdit, onDelete }) => {
       <Card hover className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getCategoryColor(transaction.category, transaction.type)}`}>
-              <ApperIcon name={getCategoryIcon(transaction.category)} className="w-6 h-6" />
+<div className={`w-12 h-12 rounded-full flex items-center justify-center ${getCategoryColor(transaction.category_c || transaction.category, transaction.type_c || transaction.type)}`}>
+              <ApperIcon name={getCategoryIcon(transaction.category_c || transaction.category)} className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{transaction.description}</h3>
-              <p className="text-sm text-gray-500">{transaction.category} • {formatDate(transaction.date)}</p>
+              <h3 className="font-semibold text-gray-900">{transaction.description_c || transaction.Name}</h3>
+              <p className="text-sm text-gray-500">{transaction.category_c || transaction.category} • {formatDate(transaction.date_c || transaction.date)}</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
             <div className="text-right">
-              <p className={`font-semibold ${transaction.type === "income" ? "text-success-600" : "text-error-600"}`}>
-                {transaction.type === "income" ? "+" : "-"}{formatCurrency(Math.abs(transaction.amount))}
+              <p className={`font-semibold ${(transaction.type_c || transaction.type) === "income" ? "text-success-600" : "text-error-600"}`}>
+                {(transaction.type_c || transaction.type) === "income" ? "+" : "-"}{formatCurrency(Math.abs(transaction.amount_c || transaction.amount))}
               </p>
             </div>
             <div className="flex space-x-1">

@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import Input from "@/components/atoms/Input";
-import Select from "@/components/atoms/Select";
-import Button from "@/components/atoms/Button";
 import { categoryService } from "@/services/api/categoryService";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
 import { getCurrentMonth } from "@/utils/formatters";
 
 const BudgetForm = ({ budget, onSubmit, onCancel }) => {
@@ -17,13 +17,13 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     loadCategories();
     if (budget) {
       setFormData({
-        category: budget.category,
-        monthlyLimit: budget.monthlyLimit.toString(),
-        month: budget.month,
+        category: budget.category_c || budget.category,
+        monthlyLimit: (budget.monthlyLimit_c || budget.monthlyLimit).toString(),
+        month: budget.month_c || budget.month,
       });
     }
   }, [budget]);
@@ -32,7 +32,7 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
     try {
       const data = await categoryService.getAll();
       // Only show expense categories for budgets
-      setCategories(data.filter(cat => cat.type === "expense"));
+      setCategories(data.filter(cat => (cat.type_c || cat.type) === "expense"));
     } catch (error) {
       console.error("Error loading categories:", error);
     }
@@ -61,13 +61,12 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
 
     setLoading(true);
     try {
-      const budgetData = {
+const budgetData = {
         category: formData.category,
         monthlyLimit: parseFloat(formData.monthlyLimit),
         month: formData.month,
-        spent: budget ? budget.spent : 0,
+        spent: budget ? (budget.spent_c || budget.spent) : 0,
       };
-
       await onSubmit(budgetData);
       toast.success(budget ? "Budget updated successfully!" : "Budget created successfully!");
     } catch (error) {
@@ -98,10 +97,10 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
         onChange={handleChange("category")}
         error={errors.category}
       >
-        <option value="">Select a category</option>
+<option value="">Select a category</option>
         {categories.map((category) => (
-          <option key={category.Id} value={category.name}>
-            {category.name}
+          <option key={category.Id} value={category.Name || category.name}>
+            {category.Name || category.name}
           </option>
         ))}
       </Select>
