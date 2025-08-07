@@ -8,6 +8,7 @@ const Button = React.forwardRef(({
   size = "md",
   children, 
   disabled,
+  loading,
   ...props 
 }, ref) => {
   const baseStyles = "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -29,12 +30,12 @@ const Button = React.forwardRef(({
   };
 
   return (
-    <motion.button
+<motion.button
       ref={ref}
       className={cn(baseStyles, variants[variant], sizes[size], className)}
-      disabled={disabled}
-      whileHover={!disabled ? { scale: 1.02 } : {}}
-      whileTap={!disabled ? { scale: 0.98 } : {}}
+      disabled={disabled || loading}
+      whileHover={!disabled && !loading ? { scale: 1.02 } : {}}
+      whileTap={!disabled && !loading ? { scale: 0.98 } : {}}
       {...props}
     >
       {children}
